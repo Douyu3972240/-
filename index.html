@@ -64,7 +64,7 @@
 		// 第二个飞机
 		let planeB = draw.Image("./resource/images/icon02.png")
 		// 开始载入我自己的飞机
-		let myPlane = draw.Image("./resource/images/icon03.png")
+		let myPlane = draw.Image("./resource/images/icon03.png",'myPlane')
 
 
 		plane.attribute.width = 122 / 2
@@ -115,6 +115,10 @@
 				myPlane
 				.attribute.height)
 		}
+		// 这里测试，在游戏开始时就开火(就生成子弹)
+		
+
+
 		draw.setFPS(240)
 		const FPS = (parseInt(Math.round(1000 / draw.FPS) / Math.round(1000 / 30) * 100) / 100)
 		const mainSprite = myPlane
@@ -123,8 +127,10 @@
 		// 目前还不能做到循环一个飞机的集合，只能手动的把需要判断的一个个的加进去
 		otherSprite.push(plane)
 		otherSprite.push(planeB)
+		draw.controller.onFire.call(draw,FPS)
 		// draw.checkSpriteMargin(mainSprite, otherSprite)
 		// return false
+		
 		draw.timer.refresh = setInterval(() => {
 			draw.update()
 
@@ -162,14 +168,17 @@
 				.attribute.height)
 			draw.ctx.drawImage(myPlane, myPlane.attribute.x, myPlane.attribute.y, myPlane.attribute.width,
 				myPlane.attribute.height)
+				
+			draw.controller.onFire.call(draw,FPS)
 
 
 
 
 			draw.showFPS()
-			if(draw.checkSpriteMargin(mainSprite, otherSprite) == false){
+			// debugger
+			if (draw.checkSpriteMargin(mainSprite, otherSprite) == false) {
 				clearInterval(draw.timer.refresh)
-				alert("游戏结束，请按F5刷新页面重新开始游戏")
+				logs.success("游戏结束，请按F5刷新页面重新开始游戏")
 				return false
 			}
 
@@ -246,13 +255,5 @@
 			// 让飞机开始向上边移动
 			myPlane.attribute.speedY = 0
 		})
-
-
-
-		// 实现每秒刷新60次，
-		// setTimeout(function() {
-		// 	draw.update()
-		// }, 1000);
-
 	})
 </script>
